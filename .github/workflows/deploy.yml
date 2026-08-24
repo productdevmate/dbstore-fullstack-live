@@ -32,11 +32,11 @@ jobs:
         run: |
           mkdir -p ~/.ssh
 
-          echo "${{ secrets.SERVER_PRIVATEKEY }}" > ~/.ssh/deploy_key
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
 
           chmod 600 ~/.ssh/deploy_key
 
-          ssh-keyscan -H "${{ vars.SERVER_IP }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -H "${{ vars.SERVER_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Copy ZIP to server
         run: |
@@ -44,14 +44,14 @@ jobs:
 
           scp -i ~/.ssh/deploy_key \
             project.zip \
-            "${{ vars.SERVER_USER }}@${{ vars.SERVER_IP }}:/tmp/project.zip"
+            "${{ vars.SERVER_USERNAME }}@${{ vars.SERVER_HOST }}:/tmp/project.zip"
 
       - name: Extract ZIP on server and Deploy
         run: |
           echo "Extracting package on server..."
 
           ssh -i ~/.ssh/deploy_key \
-            "${{ vars.SERVER_USER }}@${{ vars.SERVER_IP }}" << 'EOF'
+            "${{ vars.SERVER_USERNAME }}@${{ vars.SERVER_HOST }}" << 'EOF'
 
           mkdir -p /home/ubuntu/dbadmin
 
