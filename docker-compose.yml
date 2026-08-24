@@ -1,0 +1,104 @@
+version: '3.9'
+
+services:
+
+  # ===== PostgreSQL =====
+  postgres:
+    image: postgres:16-alpine
+    container_name: daddybazaar-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: daddybazaar
+      POSTGRES_USER: daddybazaar
+      POSTGRES_PASSWORD: daddybazaar
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U daddybazaar -d daddybazaar"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - daddybazaar-net
+
+  # ===== Redis =====
+  redis:
+    image: redis:7-alpine
+    container_name: daddybazaar-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - daddybazaar-net
+
+  # ===== Spring Boot Backend =====
+  backend:
+    build:
+      context: ./daddybazaar-backend
+      dockerfile: Dockerfile
+    container_name: daddybazaar-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: jdbc:postgresql://postgres:5432/daddybazaar
+      DB_USERNAME: daddybazaar
+      DB_PASSWORD: daddybazaar
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: ${JWT_SECRET:-ThisIsAVeryLongSecretKeyForDaddyBazaarJwtTokenSigningThatIsAtLeast256BitsLong}
+      JWT_EXPIRATION_MS: 86400000
+      JWT_REFRESH_EXPIRATION_MS: 604800000
+      APP_DOMAIN: ${APP_DOMAIN:-daddybazaar.com}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
+      STORAGE_PROVIDER: local
+      STORAGE_LOCAL_DIR: /app/uploads
+      STORAGE_LOCAL_BASE_URL: http://localhost:8910/files
+      SERVER_PORT: 8910
+      TRIAL_DAYS: 14
+    ports:
+      - "8910:8910"
+    volumes:
+      - uploads:/app/uploads
+    networks:
+      - daddybazaar-net
+
+  # ===== React Frontend =====
+  frontend:
+    build:
+      context: ./daddybazaar-frontend
+      dockerfile: Dockerfile
+    container_name: daddybazaar-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      VITE_API_BASE_URL: http://localhost:8910
+      VITE_APP_DOMAIN: ${APP_DOMAIN:-daddybazaar.com}
+    ports:
+      - "5173:80"
+    networks:
+      - daddybazaar-net
+
+volumes:
+  pgdata:
+  redisdata:
+  uploads:
+
+networks:
+  daddybazaar-net:
+    driver: bridge

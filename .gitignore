@@ -1,0 +1,28 @@
+# ===== Environment =====
+.env
+*.env.local
+*.env.production
+
+# ===== Backend =====
+daddybazaar-backend/target/
+daddybazaar-backend/*.jar
+daddybazaar-backend/uploads/
+
+# ===== Frontend =====
+daddybazaar-frontend/node_modules/
+daddybazaar-frontend/dist/
+daddybazaar-frontend/.env
+
+# ===== Docker volumes =====
+pgdata/
+redisdata/
+
+# ===== IDE =====
+.idea/
+*.iml
+.vscode/
+*.class
+
+# ===== OS =====
+.DS_Store
+Thumbs.db

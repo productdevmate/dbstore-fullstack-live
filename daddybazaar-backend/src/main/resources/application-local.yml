@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/daddybazaar_local
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+logging:
+  level:
+    com.daddybazaar: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# Local storage configuration overrides if needed
+storage:
+  provider: local
+  local:
+    upload-dir: ./uploads-local
+    base-url: http://localhost:8910/files
+
+# Relax JWT for local testing if needed
+# jwt:
+#   expiration-ms: 31536000000 # 1 year for local dev
+
+server:
+  port: 8910
