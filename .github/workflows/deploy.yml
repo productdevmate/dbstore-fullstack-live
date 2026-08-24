@@ -13,19 +13,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup SSH and Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          # Get the secret key and save it to id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          # Create known_hosts by scanning the server
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
       - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            # Navigate to the project directory. 
-            # IMPORTANT: Update this path if your project is located elsewhere on the server!
+        run: |
+          ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} << 'EOF'
             cd /home/ubuntu/dbadmin
-            
-            # Pull the latest changes from the main branch
             git pull origin main
-            
-            # Rebuild and restart the containers
             docker-compose up -d --build
+          EOF
