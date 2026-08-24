@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: Deploy Daddybazaar
 
 on:
   push:
@@ -9,23 +9,62 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup SSH and Known Hosts
+      - name: Create ZIP package
+        run: |
+          echo "Creating deployment package..."
+
+          # Zipping the necessary backend, frontend, and compose files
+          zip -r project.zip \
+            daddybazaar-backend \
+            daddybazaar-frontend \
+            docker-compose.yml \
+            .env.example
+
+          echo "Package created:"
+          ls -lh project.zip
+
+      - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
-          # Get the secret key and save it to id_rsa
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          # Create known_hosts by scanning the server
-          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy via SSH
+          echo "${{ secrets.SERVER_PRIVATEKEY }}" > ~/.ssh/deploy_key
+
+          chmod 600 ~/.ssh/deploy_key
+
+          ssh-keyscan -H "${{ vars.SERVER_IP }}" >> ~/.ssh/known_hosts
+
+      - name: Copy ZIP to server
         run: |
-          ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            cd /home/ubuntu/dbadmin
-            git pull origin main
-            docker-compose up -d --build
+          echo "Copying package to server..."
+
+          scp -i ~/.ssh/deploy_key \
+            project.zip \
+            "${{ vars.SERVER_USER }}@${{ vars.SERVER_IP }}:/tmp/project.zip"
+
+      - name: Extract ZIP on server and Deploy
+        run: |
+          echo "Extracting package on server..."
+
+          ssh -i ~/.ssh/deploy_key \
+            "${{ vars.SERVER_USER }}@${{ vars.SERVER_IP }}" << 'EOF'
+
+          mkdir -p /home/ubuntu/dbadmin
+
+          # Extract the files
+          unzip -o /tmp/project.zip -d /home/ubuntu/dbadmin
+
+          # Clean up the zip file
+          rm -f /tmp/project.zip
+          
+          # Navigate to project and start docker-compose
+          cd /home/ubuntu/dbadmin
+          docker-compose up -d --build
+
+          echo "Deployment completed successfully"
+
           EOF
