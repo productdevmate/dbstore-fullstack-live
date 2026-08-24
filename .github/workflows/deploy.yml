@@ -61,9 +61,9 @@ jobs:
           # Clean up the zip file
           rm -f /tmp/project.zip
           
-          # Navigate to project and start docker-compose
+          # Navigate to project and start docker compose
           cd /home/ubuntu/dbadmin
-          docker-compose up -d --build
+          docker compose up -d --build
 
           echo "Deployment completed successfully"
 
