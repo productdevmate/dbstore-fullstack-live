@@ -29,7 +29,8 @@ public class DataSeederConfig {
                     new DefaultUser("Product Manager", "productmanager@daddybazaar.com", "9000000002", "Admin@123", "PRODUCT_MANAGER"),
                     new DefaultUser("Area Manager", "areamanager@daddybazaar.com", "9000000003", "Admin@123", "AREA_MANAGER"),
                     new DefaultUser("Product", "product@daddybazaar.com", "9000000004", "Admin@123", "PRODUCT"),
-                    new DefaultUser("Product Associate", "productassociate@daddybazaar.com", "9000000005", "Admin@123", "PRODUCT_ASSOCIATE")
+                    new DefaultUser("Product Associate", "productassociate@daddybazaar.com", "9000000005", "Admin@123", "PRODUCT_ASSOCIATE"),
+                    new DefaultUser("Product Associate 2", "productassociate2@daddybazaar.com", "9000000006", "Admin@123", "PRODUCT_ASSOCIATE")
             );
 
             for (DefaultUser defUser : defaultUsers) {
