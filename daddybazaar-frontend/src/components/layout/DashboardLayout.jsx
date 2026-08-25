@@ -6,6 +6,7 @@ import {
   Zap, UserPlus, Users, Headphones, UserCog
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import logoImg from '../../assets/logo.png';
 
 const getNavItems = (role) => {
   if (role === 'SUPER_ADMIN') {
@@ -82,11 +83,11 @@ export function DashboardLayout({ children }) {
         <div style={{ padding: '1.5rem 1.25rem', borderBottom: '1px solid var(--color-border)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div style={{
-              width: 36, height: 36, borderRadius: 8,
-              background: 'var(--color-primary)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center'
+              width: 36, height: 36,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              overflow: 'hidden'
             }}>
-              <Zap size={18} color="white" strokeWidth={2.5} />
+              <img src={logoImg} alt="DaddyBazaar Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
             <div>
               <div style={{ fontWeight: 900, fontSize: '1.25rem', letterSpacing: '-0.02em', color: '#000' }}>

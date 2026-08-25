@@ -5,6 +5,7 @@ import {
   Store, Globe, Users, Star, Layout, PenTool, Phone, 
   BarChart, Rocket, Check 
 } from 'lucide-react';
+import logoImg from '../../assets/logo.png';
 
 export default function LandingPage() {
   return (
@@ -34,7 +35,7 @@ export default function LandingPage() {
       }}>
         {/* Left: Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontWeight: 800, fontSize: '1.35rem', letterSpacing: '-0.02em', flex: 1, color: '#000' }}>
-          <div style={{ width: 22, height: 22, backgroundColor: '#cf1919', borderRadius: 4 }}></div>
+          <img src={logoImg} alt="DaddyBazaar Logo" style={{ width: 28, height: 28, objectFit: 'contain' }} />
           <span>Daddy<span style={{color: '#cf1919'}}>Bazaar</span></span>
         </div>
         
@@ -415,7 +416,7 @@ export default function LandingPage() {
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '3rem' }}>
             <div style={{ flex: '1 1 250px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontWeight: 800, fontSize: '1.5rem', marginBottom: '1.5rem' }}>
-                <div style={{ width: 22, height: 22, backgroundColor: '#cf1919', borderRadius: 4 }}></div> <span>Daddy<span style={{color: '#cf1919'}}>Bazaar</span></span>
+                <img src={logoImg} alt="DaddyBazaar Logo" style={{ width: 32, height: 32, objectFit: 'contain' }} /> <span>Daddy<span style={{color: '#cf1919'}}>Bazaar</span></span>
               </div>
               <p style={{ color: '#9ca3af', fontSize: '0.95rem', maxWidth: 280, lineHeight: 1.6 }}>
                 Helping businesses build their online identity and grow digitally with ease.
