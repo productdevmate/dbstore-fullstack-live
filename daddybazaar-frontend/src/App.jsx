@@ -23,6 +23,8 @@ import VendorListPage from './features/admin/VendorListPage';
 import ProductManagerDashboard from './features/admin/ProductManagerDashboard';
 import ProductAdminDashboard from './features/admin/ProductAdminDashboard';
 import ProductAssociateDashboard from './features/admin/ProductAssociateDashboard';
+import StaffListPage from './features/admin/StaffListPage';
+import RegisterStaffPage from './features/admin/RegisterStaffPage';
 import HelpDeskPage from './features/helpdesk/HelpDeskPage';
 import SettingsPage from './features/settings/SettingsPage';
 
@@ -89,6 +91,12 @@ export default function App() {
           } />
           <Route path="/register-vendor" element={
             <ProtectedRoute><RegisterVendorPage /></ProtectedRoute>
+          } />
+          <Route path="/staff" element={
+            <ProtectedRoute><StaffListPage /></ProtectedRoute>
+          } />
+          <Route path="/register-staff" element={
+            <ProtectedRoute><RegisterStaffPage /></ProtectedRoute>
           } />
           <Route path="/product-manager" element={
             <ProtectedRoute><ProductManagerDashboard /></ProtectedRoute>

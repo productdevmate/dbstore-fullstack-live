@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Building2, Tag, Package, Globe,
   CreditCard, Settings, LogOut, Menu, X, ChevronRight,
-  Zap, UserPlus, Users, Headphones
+  Zap, UserPlus, Users, Headphones, UserCog
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -13,6 +13,7 @@ const getNavItems = (role) => {
       { to: '/super-admin', icon: LayoutDashboard, label: 'Super Admin Home' },
       { to: '/vendors', icon: Users, label: 'Vendors List' },
       { to: '/register-vendor', icon: UserPlus, label: 'Register Vendor' },
+      { to: '/staff', icon: UserCog, label: 'Staff' },
       { to: '/settings', icon: Settings, label: 'Platform Settings' },
     ];
   }

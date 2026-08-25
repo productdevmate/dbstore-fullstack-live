@@ -12,6 +12,11 @@ export const businessApi = {
   adminList:      ()          => axiosClient.get('/admin/businesses'),
 };
 
+export const staffApi = {
+  list:     ()     => axiosClient.get('/admin/staff'),
+  register: (data) => axiosClient.post('/admin/staff/register', data),
+};
+
 export const categoryApi = {
   list:   ()         => axiosClient.get('/categories'),
   create: (data)     => axiosClient.post('/categories', data),
