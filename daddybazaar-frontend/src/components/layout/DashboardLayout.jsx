@@ -191,7 +191,12 @@ export function DashboardLayout({ children }) {
           >
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          <div style={{ fontWeight: 900, color: '#000' }}>DaddyBazaar</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <img src={logoImg} alt="Logo" style={{ width: 28, height: 28, objectFit: 'contain' }} />
+            <div style={{ fontWeight: 900, color: '#000', fontSize: '1.2rem', letterSpacing: '-0.02em' }}>
+              Daddy<span style={{ color: 'var(--color-primary)' }}>Bazaar</span>
+            </div>
+          </div>
         </header>
 
         <main className="page-enter" style={{ padding: '2rem' }}>
